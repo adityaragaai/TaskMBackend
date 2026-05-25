@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: taskm-backend
+    runtime: node
+    plan: free
+    repo: https://github.com/adityaragaai/TaskMBackend
+    branch: main
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGO_URI
+        sync: false
+      - key: CLIENT_URL
+        sync: false
