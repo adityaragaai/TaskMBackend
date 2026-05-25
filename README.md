@@ -62,16 +62,14 @@ Do not commit `.env`.
 | **Root Directory** | *(leave empty — repo root, not `src`)* |
 | Runtime | Node **20** (avoid Node 26 until tested) |
 | Build Command | `npm install --include=dev && npm run build` |
-| Start Command | `npm start` |
+| Start Command | `node bootstrap.js` |
 | Health Check Path | `/api/health` |
 
-If you see `Cannot find module .../src/dist/server.js`:
+If you see `Cannot find module .../src/dist/server.js`, Render is using **`node dist/server.js`** from the **`src`** folder (often because `"main": "dist/server.js"` was auto-detected). Fix:
 
-1. **Root Directory** must be empty (not `src`).
-2. **Start Command** must be exactly `npm start` (not `node src/dist/server.js`).
-3. Redeploy with **Clear build cache**.
-
-The repo uses `bootstrap.js` so `npm start` always loads `dist/server.js` from the project root.
+1. **Start Command** = `node bootstrap.js` (not `npm start` alone, not `node dist/server.js`).
+2. **Root Directory** = empty (best), or leave as `src` and use the repo’s `src/package.json` fallback.
+3. **Clear build cache** and redeploy.
 
 3. **Environment** variables:
 

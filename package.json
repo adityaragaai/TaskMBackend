@@ -2,14 +2,14 @@
   "name": "taskm-backend",
   "version": "1.0.0",
   "description": "TaskManager Express API",
-  "main": "dist/server.js",
+  "main": "bootstrap.js",
   "engines": {
     "node": "20.x"
   },
   "scripts": {
     "start": "node bootstrap.js",
     "dev": "nodemon --exec ts-node src/server.ts",
-    "build": "tsc",
+    "build": "tsc && node -e \"require('fs').accessSync('dist/server.js')\"",
     "render:build": "npm install --include=dev && npm run build",
     "test:e2e": "node scripts/e2e-test.mjs"
   },
