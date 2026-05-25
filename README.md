@@ -18,8 +18,8 @@ API base: `http://localhost:5001/api` (see `PORT` in `.env`).
 | Script        | Description                    |
 |---------------|--------------------------------|
 | `npm run dev` | Nodemon + ts-node (local)      |
-| `npm run build` | Compile TypeScript to `dist` |
-| `npm start`   | Run compiled `dist/server.js`  |
+| `npm start`   | Run API with ts-node (`src/server.ts`) |
+| `npm run build` | Type-check only (`tsc --noEmit`) |
 | `npm run test:e2e` | Smoke test against running API |
 
 ## Environment variables
@@ -59,17 +59,13 @@ Do not commit `.env`.
 
 | Field | Value |
 |-------|--------|
-| **Root Directory** | *(leave empty — repo root, not `src`)* |
-| Runtime | Node **20** (avoid Node 26 until tested) |
-| Build Command | `npm install --include=dev && npm run build` |
-| Start Command | `node bootstrap.js` |
+| **Root Directory** | *(leave empty)* |
+| Runtime | Node **20** |
+| Build Command | `npm install` |
+| Start Command | `npm start` |
 | Health Check Path | `/api/health` |
 
-If you see `Cannot find module .../src/dist/server.js`, Render is using **`node dist/server.js`** from the **`src`** folder (often because `"main": "dist/server.js"` was auto-detected). Fix:
-
-1. **Start Command** = `node bootstrap.js` (not `npm start` alone, not `node dist/server.js`).
-2. **Root Directory** = empty (best), or leave as `src` and use the repo’s `src/package.json` fallback.
-3. **Clear build cache** and redeploy.
+No `bootstrap.js` or `dist/` folder — the app runs `src/server.ts` directly via ts-node.
 
 3. **Environment** variables:
 

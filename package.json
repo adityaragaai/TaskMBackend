@@ -2,16 +2,14 @@
   "name": "taskm-backend",
   "version": "1.0.0",
   "description": "TaskManager Express API",
-  "main": "bootstrap.js",
+  "main": "src/server.ts",
   "engines": {
     "node": "20.x"
   },
   "scripts": {
-    "start": "node bootstrap.js",
-    "render:start": "npm run build && node bootstrap.js",
     "dev": "nodemon --exec ts-node src/server.ts",
-    "build": "tsc && node -e \"require('fs').accessSync('src/dist/server.js')\"",
-    "render:build": "npm install --include=dev && npm run build",
+    "start": "ts-node src/server.ts",
+    "build": "tsc --noEmit",
     "test:e2e": "node scripts/e2e-test.mjs"
   },
   "keywords": [],
@@ -25,6 +23,7 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.2",
+    "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
   },
   "devDependencies": {
@@ -33,7 +32,6 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.9.1",
-    "nodemon": "^3.1.14",
-    "ts-node": "^10.9.2"
+    "nodemon": "^3.1.14"
   }
 }
