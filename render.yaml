@@ -5,7 +5,6 @@ services:
     plan: free
     repo: https://github.com/adityaragaai/TaskMBackend
     branch: main
-    rootDir: .
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm start
     healthCheckPath: /api/health

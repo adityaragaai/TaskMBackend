@@ -65,7 +65,13 @@ Do not commit `.env`.
 | Start Command | `npm start` |
 | Health Check Path | `/api/health` |
 
-If you see `Cannot find module .../src/dist/server.js`, **Root Directory** is wrong — clear it and redeploy.
+If you see `Cannot find module .../src/dist/server.js`:
+
+1. **Root Directory** must be empty (not `src`).
+2. **Start Command** must be exactly `npm start` (not `node src/dist/server.js`).
+3. Redeploy with **Clear build cache**.
+
+The repo uses `bootstrap.js` so `npm start` always loads `dist/server.js` from the project root.
 
 3. **Environment** variables:
 

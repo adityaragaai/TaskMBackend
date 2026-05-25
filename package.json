@@ -7,7 +7,7 @@
     "node": "20.x"
   },
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node bootstrap.js",
     "dev": "nodemon --exec ts-node src/server.ts",
     "build": "tsc",
     "render:build": "npm install --include=dev && npm run build",
