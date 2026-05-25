@@ -59,10 +59,13 @@ Do not commit `.env`.
 
 | Field | Value |
 |-------|--------|
-| Runtime | Node |
-| Build Command | `npm install && npm run build` |
+| **Root Directory** | *(leave empty — repo root, not `src`)* |
+| Runtime | Node **20** (avoid Node 26 until tested) |
+| Build Command | `npm install --include=dev && npm run build` |
 | Start Command | `npm start` |
 | Health Check Path | `/api/health` |
+
+If you see `Cannot find module .../src/dist/server.js`, **Root Directory** is wrong — clear it and redeploy.
 
 3. **Environment** variables:
 
