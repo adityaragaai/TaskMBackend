@@ -1,9 +1,0 @@
-{
-  "name": "taskm-backend-render-src-root",
-  "private": true,
-  "description": "Fallback entry when Render Root Directory is set to src",
-  "scripts": {
-    "build": "cd .. && npm install --include=dev && npm run build",
-    "start": "node start.js"
-  }
-}
