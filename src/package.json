@@ -1,0 +1,11 @@
+{
+  "name": "taskm-backend-render-wrapper",
+  "private": true,
+  "engines": {
+    "node": "20.x"
+  },
+  "scripts": {
+    "postinstall": "cd .. && npm install && npm run build",
+    "start": "cd .. && npm start"
+  }
+}
