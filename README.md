@@ -18,8 +18,8 @@ API base: `http://localhost:5001/api` (see `PORT` in `.env`).
 | Script        | Description                    |
 |---------------|--------------------------------|
 | `npm run dev` | Nodemon + ts-node (local)      |
-| `npm start`   | Run API with ts-node (`src/server.ts`) |
-| `npm run build` | Type-check only (`tsc --noEmit`) |
+| `npm start`   | Run compiled app (`node dist/server.js`) |
+| `npm run build` | Compile TypeScript to `dist/` |
 | `npm run test:e2e` | Smoke test against running API |
 
 ## Environment variables
@@ -61,11 +61,11 @@ Do not commit `.env`.
 |-------|--------|
 | **Root Directory** | *(leave empty)* |
 | Runtime | Node **20** |
-| Build Command | `npm install` |
+| Build Command | `npm install --include=dev && npm run build` |
 | Start Command | `npm start` |
 | Health Check Path | `/api/health` |
 
-No `bootstrap.js` or `dist/` folder — the app runs `src/server.ts` directly via ts-node.
+Build creates `dist/server.js`. **Root Directory** must be empty (not `src`).
 
 3. **Environment** variables:
 

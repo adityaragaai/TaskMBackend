@@ -13,7 +13,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = Number(process.env.PORT) || 5001;
 
 const corsOptions = process.env.CLIENT_URL
   ? { origin: process.env.CLIENT_URL, credentials: true }
@@ -39,15 +39,19 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled rejection:', reason);
+});
+
 const start = async () => {
   const missing = ['MONGO_URI', 'JWT_SECRET'].filter((key) => !process.env[key]);
   if (missing.length) {
     console.error(`Missing required environment variables: ${missing.join(', ')}`);
-    console.error('Set them in Render → Environment before deploying.');
+    console.error('Set them in Render → Environment → add MONGO_URI and JWT_SECRET.');
     process.exit(1);
   }
 
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
   });
 
@@ -56,9 +60,11 @@ const start = async () => {
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.error(`MongoDB connection failed: ${message}`);
-    console.error('Check MONGO_URI and Atlas Network Access (allow 0.0.0.0/0).');
-    // Keep process alive so Render logs stay visible; API calls will fail until DB connects.
+    console.error('Fix: Atlas → Network Access → allow 0.0.0.0/0, and verify MONGO_URI password.');
   }
 };
 
-start();
+start().catch((err) => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
+});
