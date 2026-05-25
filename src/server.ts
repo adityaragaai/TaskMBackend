@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import connectDB from './config/db';
 
 import authRoutes from './routes/authRoutes';
@@ -10,14 +11,6 @@ import dashboardRoutes from './routes/dashboardRoutes';
 import { notFound, errorHandler } from './middleware/errorMiddleware';
 
 dotenv.config();
-
-const requiredEnv = ['MONGO_URI', 'JWT_SECRET'] as const;
-for (const key of requiredEnv) {
-  if (!process.env[key]) {
-    console.error(`Missing required environment variable: ${key}`);
-    process.exit(1);
-  }
-}
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -30,11 +23,11 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.json({
+    status: 'ok',
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+  });
 });
-
-// Database Connection
-connectDB();
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -46,6 +39,26 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+const start = async () => {
+  const missing = ['MONGO_URI', 'JWT_SECRET'].filter((key) => !process.env[key]);
+  if (missing.length) {
+    console.error(`Missing required environment variables: ${missing.join(', ')}`);
+    console.error('Set them in Render → Environment before deploying.');
+    process.exit(1);
+  }
+
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+
+  try {
+    await connectDB();
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`MongoDB connection failed: ${message}`);
+    console.error('Check MONGO_URI and Atlas Network Access (allow 0.0.0.0/0).');
+    // Keep process alive so Render logs stay visible; API calls will fail until DB connects.
+  }
+};
+
+start();

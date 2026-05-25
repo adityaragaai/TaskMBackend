@@ -15,4 +15,5 @@ if (!serverPath) {
   process.exit(1);
 }
 
+console.log(`Starting server from: ${serverPath}`);
 require(serverPath);

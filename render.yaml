@@ -6,7 +6,7 @@ services:
     repo: https://github.com/adityaragaai/TaskMBackend
     branch: main
     buildCommand: npm install --include=dev && npm run build && ls -la src/dist/
-    startCommand: node bootstrap.js
+    startCommand: npm run render:start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
