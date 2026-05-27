@@ -90,6 +90,9 @@ export const updateTask = async (req: AuthRequest, res: Response) => {
   }
 
   const updatedTask = await task.save();
+  await updatedTask.populate('assignedTo', 'name email');
+  await updatedTask.populate('projectId', 'title');
+  await updatedTask.populate('createdBy', 'name');
   res.json(updatedTask);
 };
 
